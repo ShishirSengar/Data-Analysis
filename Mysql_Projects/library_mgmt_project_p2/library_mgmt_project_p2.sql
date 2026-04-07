@@ -311,7 +311,7 @@ select * from books where rental_price > 7.0;
 select * from expensive_books;
 
 
--- Task 12: Retrieve the List of Books Not Yet Returned
+-- Task 11: Retrieve the List of Books Not Yet Returned
 select distinct ist.issued_book_name from issued_status ist
 left join return_status rst
 on ist.issued_id = rst.issued_id
