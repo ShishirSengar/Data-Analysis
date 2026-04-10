@@ -68,18 +68,46 @@ select * from books where isbn = '978-0-307-58837-1';
 
 /*
 Task 14: Branch Performance Report
-Create a query that generates a performance report for each branch, showing the number of books issued, the number of books returned, and the total revenue generated from book rentals.
+Create a query that generates a performance report for each branch, showing the number of books issued, 
+the number of books returned, and the total revenue generated from book rentals.
 */
+create table branch_performance_report as 
+select b.branch_id, b.manager_id, sum(bk.rental_price) as total_revenue, 
+count(ist.issued_id) as num_of_book_issued, count(rs.return_id) as nu_of_books_returned
+from issued_status ist
+join employees e  
+on ist.issued_emp_id = e.emp_id
+join branch b
+on e.branch_id = b.branch_id
+left join return_status rs
+on ist.issued_id = rs.issued_id
+join books bk
+on ist.issued_book_isbn = bk.isbn
+group by b.branch_id, b.manager_id;
+
+
 
 /*
 Task 15: CTAS: Create a Table of Active Members
-Use the CREATE TABLE AS (CTAS) statement to create a new table active_members containing members who have issued at least one book in the last 6 months.
+Use the CREATE TABLE AS (CTAS) statement to create a new table active_members containing members 
+who have issued at least one book in the last 2 months.
 */
+create table active_members 
+as 
+select * from members 
+where member_id in(
+					select distinct issued_member_id from issued_status
+					where issued_date >= current_date() - interval 2 month
+				   );
+
 
 /*
 Task 16: Find Employees with the Most Book Issues Processed
 Write a query to find the top 3 employees who have processed the most book issues. Display the employee name, number of books processed, and their branch.
 */
+
+
+
 
 /*
 Task 17: Identify Members Issuing High-Risk Books
@@ -93,7 +121,6 @@ Objective: Create a stored procedure to manage the status of books in a library 
     If a book is issued, the status should change to 'no'.
     If a book is returned, the status should change to 'yes'.
 */
-
 
 
 
