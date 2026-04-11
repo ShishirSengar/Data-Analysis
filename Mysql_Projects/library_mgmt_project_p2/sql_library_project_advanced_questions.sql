@@ -103,37 +103,69 @@ where member_id in(
 
 /*
 Task 16: Find Employees with the Most Book Issues Processed
-Write a query to find the top 3 employees who have processed the most book issues. Display the employee name, number of books processed, and their branch.
+Write a query to find the top 3 employees who have processed the most book issues. 
+Display the employee name, number of books processed, and their branch.
 */
-
-
+select e.emp_name, b.*, count(ist.issued_id) as num_of_books_issued 
+from issued_status ist
+join employees e 
+on ist.issued_emp_id = e.emp_id
+join branch b
+on e.branch_id = b.branch_id
+group by 1,2
+order by count(ist.issued_id) desc 
+limit 3;
 
 
 /*
-Task 17: Identify Members Issuing High-Risk Books
-Write a query to identify members who have issued books more than twice with the status "damaged" in the books table. Display the member name, book title, and the number of times they've issued damaged books.    
-*/
-
-/*
-Task 18: Stored Procedure
+Task 17: Stored Procedure
 Objective: Create a stored procedure to manage the status of books in a library system.
     Description: Write a stored procedure that updates the status of a book based on its issuance or return. Specifically:
     If a book is issued, the status should change to 'no'.
     If a book is returned, the status should change to 'yes'.
 */
 
+DELIMITER $$
 
+create procedure issue_book(
+	p_issued_id varchar(10),
+    p_issued_member_id varchar(30),
+    p_issued_book_isbn varchar(50),
+    p_issued_emp_id varchar(10)
+)
+begin
+	
+    declare v_status varchar(10);
 
-/*
-Task 19: Create Table As Select (CTAS)
-Objective: Create a CTAS (Create Table As Select) query to identify overdue books and calculate fines.
+	-- check if the book is available i.e status shoul be 'yes' in book table.
+    select 
+		status
+        into 
+        v_status
+    from books
+    where isbn = p_issued_book_isbn;
+    
+    if v_status = 'Yes' then
+		
+		insert into issued_status(issued_id, issued_member_id, issued_date, issued_book_isbn, issued_emp_id) 
+		values(p_issued_id, p_issued_member_id, curdate(), p_issued_book_isbn, p_issued_emp_id);
+        
+        update books
+        set status = 'No'
+        where isbn = p_issued_book_isbn;
+        
+		select concat('Book record added successfully for book isbn: ',p_issued_book_isbn) AS message;
+        
+	else
+		select concat('Sorry, the requested book is unavailable book isbn: ',p_issued_book_isbn) AS message;
+        
+	end if;
+    
+end $$
+delimiter ;
 
-Description: Write a CTAS query to create a new table that lists each member and the books they have issued but not returned within 30 days. The table should include:
-    The number of overdue books.
-    The total fines, with each day's fine calculated at $0.50.
-    The number of books issued by each member.
-    The resulting table should show:
-    Member ID
-    Number of overdue books
-    Total fines
-*/
+-- isbn = 978-0-06-025492-6 -- yes
+-- isbn = 978-0-375-41398-8 -- no
+
+CALL issue_book('IS155', 'C108', '978-0-06-025492-6', 'E104');
+CALL issue_book('IS156', 'C108', '978-0-375-41398-8', 'E104');
