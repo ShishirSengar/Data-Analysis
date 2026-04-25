@@ -115,7 +115,7 @@ AND t.market_code = 'Mark001';
 
 ---
 
-## 📈 Key Insights (Optional - You can update later)
+## 📈 Key Insights
 
 * Revenue trends across different markets
 * Monthly sales performance
