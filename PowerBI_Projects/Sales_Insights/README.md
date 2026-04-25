@@ -2,7 +2,7 @@
 
 ## 📁 Project Overview
 
-This project focuses on analyzing sales data using **MySQL** to extract meaningful business insights such as revenue trends, customer distribution, and market performance.
+This project focuses on analyzing sales data to extract meaningful business insights such as revenue trends, customer distribution, and market performance.
 
 * Dataset used: **`db_data`**
 
