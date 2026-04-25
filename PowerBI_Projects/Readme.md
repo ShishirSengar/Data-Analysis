@@ -1,42 +1,133 @@
-# **Sales Insights Data Analysis Project**
+# 📊 Sales Insights Data Analysis Project
 
--- Data for the project is provided by the name "db_data".
+## 📁 Project Overview
 
--- Data Analysis using mysql
+This project focuses on analyzing sales data using **MySQL** to extract meaningful business insights such as revenue trends, customer distribution, and market performance.
 
-1. Show all customer records.
-select * from customers;
+* Dataset used: **`db_data`**
 
-2. Show total number of customers.
-select count(*) from customers;
+---
 
-3. Show transactions for chennai market.
-select * from transactions where market_code = "Mark001";
+## 🛠️ Tools & Technologies
 
-4. Show distinct product codes that were sold in chennai.
-select distinct product_code from transactions where market_code = "Mark001";
+* MySQL
+* SQL (Joins, Aggregations, Filtering)
 
-5. Show transactions where currency is US dollars.
-select * from transactions where currency = "USD";
+---
 
-6. Show transactions in 2020 join by date table.
-select * from transactions t 
-inner join date d 
-on t.order_date = d.date
-where d.year = 2020;
+## 📌 Data Analysis Queries
 
-7. Show total revenue in year 2020.
-select sum(t.sales_amount) from transactions t 
-inner join date d
-on t.order_date = d.date
-where d.year = 2020 and t.currency = "INR\r" or t.currency = "USD\r";
+### 1. Show all customer records
 
-8. Show total revenue in year 2020, January Month.
-SELECT sum(t.sales_amount) from transactions t 
-inner join date d on t.order_date = d.date 
-where d.year=2020 and d.month_name="January" and (t.currency="INR\r" or t.currency="USD\r");
+```sql
+SELECT * FROM customers;
+```
 
-9. Show total revenue in year 2020 in Chennai.
-SELECT sum(t.sales_amount) from transactions t 
-inner join date d on t.order_date = d.date 
-where d.year=2020 and t.market_code="Mark001";
+---
+
+### 2. Show total number of customers
+
+```sql
+SELECT COUNT(*) FROM customers;
+```
+
+---
+
+### 3. Show transactions for Chennai market
+
+```sql
+SELECT * 
+FROM transactions 
+WHERE market_code = 'Mark001';
+```
+
+---
+
+### 4. Show distinct product codes sold in Chennai
+
+```sql
+SELECT DISTINCT product_code 
+FROM transactions 
+WHERE market_code = 'Mark001';
+```
+
+---
+
+### 5. Show transactions where currency is US Dollars
+
+```sql
+SELECT * 
+FROM transactions 
+WHERE currency = 'USD';
+```
+
+---
+
+### 6. Show transactions in the year 2020
+
+```sql
+SELECT * 
+FROM transactions t
+INNER JOIN date d 
+ON t.order_date = d.date
+WHERE d.year = 2020;
+```
+
+---
+
+### 7. Show total revenue in the year 2020
+
+```sql
+SELECT SUM(t.sales_amount) AS total_revenue
+FROM transactions t
+INNER JOIN date d 
+ON t.order_date = d.date
+WHERE d.year = 2020 
+AND (t.currency = 'INR' OR t.currency = 'USD');
+```
+
+---
+
+### 8. Show total revenue in January 2020
+
+```sql
+SELECT SUM(t.sales_amount) AS january_revenue
+FROM transactions t
+INNER JOIN date d 
+ON t.order_date = d.date
+WHERE d.year = 2020 
+AND d.month_name = 'January'
+AND (t.currency = 'INR' OR t.currency = 'USD');
+```
+
+---
+
+### 9. Show total revenue in Chennai (2020)
+
+```sql
+SELECT SUM(t.sales_amount) AS chennai_revenue
+FROM transactions t
+INNER JOIN date d 
+ON t.order_date = d.date
+WHERE d.year = 2020 
+AND t.market_code = 'Mark001';
+```
+
+---
+
+## 📈 Key Insights (Optional - You can update later)
+
+* Revenue trends across different markets
+* Monthly sales performance
+* Customer distribution
+* Product demand analysis
+
+---
+
+## 🚀 How to Use
+
+1. Import the dataset (`db_data`) into MySQL
+2. Run the above queries in MySQL Workbench
+3. Analyze the outputs for insights
+
+Feel free to connect for feedback or collaboration.
