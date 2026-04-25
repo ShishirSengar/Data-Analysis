@@ -4,7 +4,7 @@
 
 -- Data Analysis using mysql
 
-1. Show all customer records.
+1. Show all customer records. 
 select * from customers;
 
 2. Show total number of customers.
